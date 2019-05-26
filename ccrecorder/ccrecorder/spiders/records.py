@@ -14,8 +14,5 @@ class RecordsSpider(CSVFeedSpider):
     #    return response
 
     def parse_row(self, response, row):
-        i = {}
-        #i['url'] = row['url']
-        #i['name'] = row['name']
-        #i['description'] = row['description']
-        return i
+        pin = row['pin']
+        return pin
