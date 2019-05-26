@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from scrapy.spiders import CSVFeedSpider
-from ccrrecorder.items import CCrecord
+from ccrecorder.items import CCrecord
 
 
 class RecordsSpider(CSVFeedSpider):
@@ -23,4 +23,8 @@ class RecordsSpider(CSVFeedSpider):
         if response.xpath('//.../text()').extract() == ...
             yield None
 
-        item = CC
+        item = CCrecord()
+
+        item['propro'] = self.extract()
+
+        yield item
