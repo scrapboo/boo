@@ -5,8 +5,8 @@ from scrapy.spiders import CSVFeedSpider
 class RecordsSpider(CSVFeedSpider):
     name = 'records'
     allowed_domains = ['ccrecorder.org']
-    start_urls = ['http://ccrecorder.org/feed.csv']
-    # headers = ['id', 'name', 'description', 'image_link']
+    start_urls = ['https://alxfed.github.io/docs/pin_feed.csv']
+    headers = ['pin']
     # delimiter = '\t'
 
     # Do any adaptations you need here
