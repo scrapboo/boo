@@ -25,9 +25,10 @@ class RecordsSpider(CSVFeedSpider):
         if response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get().startswith('No PINs Found'):
             yield None
 
-        item = CCrecord()
+        item = CCrecord()    #import the scrapy.item container.
+
         # Extract the top 'card'
-        item['top_card'] = self.extract()
+        item['top_card'] = self.get()
         # Extract the table of documents
 
         yield item

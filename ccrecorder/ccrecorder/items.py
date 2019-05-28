@@ -8,6 +8,10 @@
 import scrapy
 
 
+class CCdocument(scrapy.Item)
+    # a single line in the table of records
+    pass
+
 class CCrecord(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
