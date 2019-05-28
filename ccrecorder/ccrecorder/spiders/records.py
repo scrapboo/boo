@@ -21,8 +21,8 @@ class RecordsSpider(CSVFeedSpider):
                               callback=self.parse_pin_page)
 
     def parse_pin_page(self, response):
-        NO_PIN_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()'
-        if response.xpath(NO_PIN_FOUND_RESPONSE_XPATH).get().startswith('No PINs Found'):
+        NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()'
+        if response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get().startswith('No PINs Found'):
             yield None
 
         item = CCrecord()
