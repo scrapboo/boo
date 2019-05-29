@@ -23,6 +23,7 @@ class RecordsSpider(CSVFeedSpider):
                               callback=self.parse_pin_page)
 
     def parse_pin_page(self, response):
+        RECORD_NUMBER_XPATH = '//*[@id="objs_body"]/tr/td[4]/a/@href'
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
@@ -36,11 +37,8 @@ class RecordsSpider(CSVFeedSpider):
 
         else:                                                           # there is a PIN like that
             record = CCrecord()                                           # import the scrapy.item container.
-            record['record_number'] = response.xpath('//*[@id="objs_body"]/tr/td[4]/a/@href').re('[.0-9]+')[0]
-            self.log(record)     # the movable debug line.
-            # Extract the top 'card'
-            #item['top_card'] = self.get()
-            # Extract the table of documents
+            record['record_number'] = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
+            # self.log(record)     # the movable debug line.
             yield record
 
 '''
