@@ -44,7 +44,7 @@ class RecordsSpider(CSVFeedSpider):
             yield scrapy.Request(DOCUMENTS_PAGE_URL + record_number + '/', callback=self.parse_docs_page)
 
     def parse_docs_page(self, response):
-        docs_dict = {point: 'reached'}
+        docs_dict = {'point': 'reached'}
         self.log('Reached this point')
         yield docs_dict
 
