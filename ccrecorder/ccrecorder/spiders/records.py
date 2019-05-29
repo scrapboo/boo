@@ -9,6 +9,7 @@ class RecordsSpider(CSVFeedSpider):
     allowed_domains = ['ccrecorder.org']
     start_urls = ['https://alxfed.github.io/docs/pin_feed.csv']
     headers = ['pin']
+    BASE_URL = 'http://www.ccrecorder.org'
     #
     # delimiter = '\t'
 
@@ -35,6 +36,7 @@ class RecordsSpider(CSVFeedSpider):
 
         else:                                                           # there is a PIN like that
             item = CCrecord()                                           # import the scrapy.item container.
+            record_page = response.xpath('//*[@id="objs_body"]/tr/td[4]/a')
             self.log('I came to this point from url '+response.url)     # the movable debug line.
             # Extract the top 'card'
             #item['top_card'] = self.get()
