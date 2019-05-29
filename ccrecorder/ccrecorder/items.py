@@ -8,7 +8,7 @@
 import scrapy
 
 
-class CCdocument(scrapy.Item)
+class CCdocument(scrapy.Item):
     # a single line in the table of records
     pass
 
