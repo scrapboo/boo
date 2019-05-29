@@ -25,6 +25,7 @@ class RecordsSpider(CSVFeedSpider):
         NOT_FOUND = response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get()
         if NOT_FOUND:
             if NOT_FOUND.startswith('No PINs'):
+                self.log('Not found PIN '+response.url)
                 yield None
 
         else:
