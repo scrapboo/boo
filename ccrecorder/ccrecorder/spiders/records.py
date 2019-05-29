@@ -9,7 +9,7 @@ class RecordsSpider(CSVFeedSpider):
     allowed_domains = ['ccrecorder.org']
     start_urls = ['https://alxfed.github.io/docs/pin_feed.csv']
     headers = ['pin']
-    # NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()'
+    #
     # delimiter = '\t'
 
     # Do any adaptations you need here
@@ -22,15 +22,16 @@ class RecordsSpider(CSVFeedSpider):
                               callback=self.parse_pin_page)
 
     def parse_pin_page(self, response):
-        NOT_FOUND = response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get()
-        if NOT_FOUND:
-            if NOT_FOUND.startswith('No PINs'):
-                self.log('Not found PIN '+response.url)
-                yield None
+        NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
+        NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
+        if NOT_FOUND:                                                   # ?
+            if NOT_FOUND.startswith('No PINs'):                         # No PINs?
+                self.log('Not found PIN '+response.url)                 # Debug notification
+                yield None                                              # and get out of here.
 
-        else:
-            item = CCrecord()    #import the scrapy.item container.
-            self.log('I came to this point from url '+response.url)
+        else:                                                           # there is a PIN like that
+            item = CCrecord()                                           # import the scrapy.item container.
+            self.log('I came to this point from url '+response.url)     # the movable debug line.
             # Extract the top 'card'
             #item['top_card'] = self.get()
             # Extract the table of documents
