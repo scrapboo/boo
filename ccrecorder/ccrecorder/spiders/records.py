@@ -38,7 +38,7 @@ class RecordsSpider(CSVFeedSpider):
             record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
             record['record_number'] = record_number
             # self.log(record)     # the movable debug line.
-            yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/', callback=self.parse_docs_page())
+            yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/', callback=self.parse_docs_page)
 
     def parse_docs_page(self, response):
         docs_dict = {'point': 'reached'}
