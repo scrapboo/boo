@@ -18,8 +18,11 @@ class RecordsSpider(CSVFeedSpider):
 
     def parse_row(self, response, row):
         pin = row['pin']
-        return scrapy.Request('https://www.ccrecorder.org/parcels/search/parcel/result/?line='+pin,
+        if pin:
+            return scrapy.Request('https://www.ccrecorder.org/parcels/search/parcel/result/?line='+pin,
                               callback=self.parse_pin_page)
+        else:
+            pass
 
     def parse_pin_page(self, response):
 #        if response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get().startswith('No PINs Found'):
