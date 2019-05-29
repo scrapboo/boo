@@ -8,10 +8,6 @@
 import scrapy
 
 
-class CCdocument(scrapy.Item):
-    # a single line in the table of records
-    pass
-
 class CCrecord(scrapy.Item):
     pin = scrapy.Field()
     record_number = scrapy.Field()
