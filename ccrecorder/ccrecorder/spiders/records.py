@@ -34,9 +34,7 @@ class RecordsSpider(CSVFeedSpider):
                 yield None
 
         else:                                                           # there is a PIN like that
-                                                     # import the scrapy.Item container.
             record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
-            record['record_number'] = record_number
             # self.log(response.meta['pin'])
             yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,
