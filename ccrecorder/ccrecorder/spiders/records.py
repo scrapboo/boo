@@ -24,10 +24,14 @@ class RecordsSpider(CSVFeedSpider):
     def parse_pin_page(self, response):
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
-        if NOT_FOUND:                                                   # ?
+        if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
             if NOT_FOUND.startswith('No PINs'):                         # No PINs?
                 self.log('Not found PIN '+response.url)                 # Debug notification
                 yield None                                              # and get out of here.
+
+            else:
+                self.log('something is in the place of Not found but it is not it')
+                yield None
 
         else:                                                           # there is a PIN like that
             item = CCrecord()                                           # import the scrapy.item container.
