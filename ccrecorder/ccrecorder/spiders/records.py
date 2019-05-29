@@ -22,9 +22,9 @@ class RecordsSpider(CSVFeedSpider):
                               callback=self.parse_pin_page)
 
     def parse_pin_page(self, response):
-        if response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get().startswith('No PINs Found'):
-            yield None
-
+#        if response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get().startswith('No PINs Found'):
+#            yield None
+#
         item = CCrecord()    #import the scrapy.item container.
 
         self.log('I came to this point')
