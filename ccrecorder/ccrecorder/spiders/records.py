@@ -9,7 +9,7 @@ class RecordsSpider(CSVFeedSpider):
     allowed_domains = ['ccrecorder.org']
     start_urls = ['https://alxfed.github.io/docs/pin_feed.csv']
     headers = ['pin']
-    NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()'
+    # NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()'
     # delimiter = '\t'
 
     # Do any adaptations you need here
@@ -22,7 +22,7 @@ class RecordsSpider(CSVFeedSpider):
                               callback=self.parse_pin_page)
 
     def parse_pin_page(self, response):
-        if response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get().startswith('No PINs Found'):
+        if response.xpath('//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()').get().startswith('No PINs Found'):
             yield None
 
         item = CCrecord()    #import the scrapy.item container.
