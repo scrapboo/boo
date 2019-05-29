@@ -37,7 +37,7 @@ class RecordsSpider(CSVFeedSpider):
         else:                                                           # there is a PIN like that
             item = CCrecord()                                           # import the scrapy.item container.
             record_page = response.xpath('//*[@id="objs_body"]/tr/td[4]/a/@href').get()
-            self.log(record_page)     # the movable debug line.
+            self.log(type(record_page))     # the movable debug line.
             # Extract the top 'card'
             #item['top_card'] = self.get()
             # Extract the table of documents
