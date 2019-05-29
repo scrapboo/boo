@@ -37,7 +37,7 @@ class RecordsSpider(CSVFeedSpider):
             record = CCrecord()                                         # import the scrapy.Item container.
             record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
             record['record_number'] = record_number
-            # self.log(pin)     # the movable debug line.
+            self.log(response.meta)
             yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/', callback=self.parse_docs_page)
 
     def parse_docs_page(self, response):
