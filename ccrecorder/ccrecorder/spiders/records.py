@@ -35,13 +35,13 @@ class RecordsSpider(CSVFeedSpider):
                 yield None
 
         else:                                                           # there is a PIN like that
-            item = CCrecord()                                           # import the scrapy.item container.
-            record_number = response.xpath('//*[@id="objs_body"]/tr/td[4]/a/@href').re('[.0-9]+')[0]
-            self.log(record_number)     # the movable debug line.
+            record = CCrecord()                                           # import the scrapy.item container.
+            record['record_number'] = response.xpath('//*[@id="objs_body"]/tr/td[4]/a/@href').re('[.0-9]+')[0]
+            self.log(record)     # the movable debug line.
             # Extract the top 'card'
             #item['top_card'] = self.get()
             # Extract the table of documents
-            yield item
+            yield record
 
 '''
 scrapy shell -s USER_AGENT="Mozilla/5.0" 
