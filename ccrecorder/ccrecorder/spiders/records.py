@@ -37,15 +37,15 @@ class RecordsSpider(CSVFeedSpider):
                 yield None
 
         else:                                                           # there is a PIN like that
-            record = CCrecord()                                           # import the scrapy.item container.
+            record = CCrecord()                                         # import the scrapy.Item container.
             record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
             record['record_number'] = record_number
             # self.log(record)     # the movable debug line.
             yield scrapy.Request(DOCUMENTS_PAGE_URL + record_number + '/', callback=self.parse_docs_page)
 
     def parse_docs_page(self, response):
-        # long docs page
         docs_list = []
+        self.log('Reached this point')
         yield docs_list
 
 '''
