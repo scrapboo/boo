@@ -27,7 +27,7 @@ class RecordsSpider(CSVFeedSpider):
 #
         item = CCrecord()    #import the scrapy.item container.
 
-        self.log('I came to this point'+response.url)
+        self.log('I came to this point from '+response.url)
         # Extract the top 'card'
         #item['top_card'] = self.get()
         # Extract the table of documents
