@@ -73,6 +73,7 @@ class RecordsSpider(CSVFeedSpider):
         record['pin'] = response.meta['pin']
         record['record_number'] = response.meta['record_number']
         record['lines'] = lns
+        record['lines'].update({4:'d', 5:'e'})
         self.log('Reached this point')
         yield record
 
