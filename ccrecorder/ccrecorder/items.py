@@ -49,3 +49,10 @@ class CCrecord(scrapy.Item):
     pin = scrapy.Field()
     record_number = scrapy.Field()
     lines = scrapy.Field()
+
+    def __init__(self):
+        """
+        initialize lines as an empty dictionary
+        """
+        lines = {}
+        return
