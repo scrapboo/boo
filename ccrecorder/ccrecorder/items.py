@@ -7,10 +7,16 @@
 
 import scrapy
 
+class CCrecord_line(scrapy.Item):
+    """
+    A single line in a list of documents of a record
+    """
+    pass
 
 class CCrecord(scrapy.Item):
+    """
+    The complete record/list of events associated with a PIN
+    """
     pin = scrapy.Field()
     record_number = scrapy.Field()
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     pass
