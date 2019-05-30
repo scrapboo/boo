@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.spiders import CSVFeedSpider
-from ccrecorder.items import CCrecord, CCrecordLine
+from ccrecorder.items import CCrecord, CCrecordLine, CCrecordLineName, CCrecordLineParcel, CCrecordLineRelatedDoc
 
 
 class RecordsSpider(CSVFeedSpider):
