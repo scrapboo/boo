@@ -69,8 +69,10 @@ class RecordsSpider(CSVFeedSpider):
         :return: yield a scrapy.item CCrecord for every valid PIN
         """
         record = CCrecord()
+        lns = ['a', 'b', 'c']
         record['pin'] = response.meta['pin']
         record['record_number'] = response.meta['record_number']
+        record['lines'] = lns
         self.log('Reached this point')
         yield record
 
