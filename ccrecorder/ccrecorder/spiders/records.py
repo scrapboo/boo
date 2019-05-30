@@ -70,13 +70,13 @@ class RecordsSpider(CSVFeedSpider):
         """
         record = CCrecord()
         line = CCrecordLine()
-        # lns = {1:'a', 2:'b', 3:'c'}
+        lns = {1:'a', 2:'b', 3:'c'}
         record['pin'] = response.meta['pin']
         record['record_number'] = response.meta['record_number']
         #new line
         line['date'] = '2017-02-27'
         line['doc_type'] = 'MORTGAGE'
-        record['lines'].update(line)
+        record['lines'].update(lns)
         self.log('Reached this point')
         yield record
 
