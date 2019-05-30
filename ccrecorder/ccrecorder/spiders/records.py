@@ -61,8 +61,8 @@ class RecordsSpider(CSVFeedSpider):
 
     def parse_docs_page(self, response):
         """
-        Parces the docs page after jumping to it.
-        :param response:
+        Parces the docs page of a pin after jumping to it.
+        :param response - the downloaded record/docs page
         :return: yield a scrapy.item CCrecord for every valid PIN
         """
         record = CCrecord()
