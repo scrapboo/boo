@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.spiders import CSVFeedSpider
-from ccrecorder.items import CCrecord
+from ccrecorder.items import CCrecord, CCrecordLine
 
 
 class RecordsSpider(CSVFeedSpider):
@@ -69,11 +69,14 @@ class RecordsSpider(CSVFeedSpider):
         :return: yield a scrapy.item CCrecord for every valid PIN
         """
         record = CCrecord()
-        lns = {1:'a', 2:'b', 3:'c'}
+        line = CCrecordLine()
+        # lns = {1:'a', 2:'b', 3:'c'}
         record['pin'] = response.meta['pin']
         record['record_number'] = response.meta['record_number']
-        record['lines'] = lns
-        record['lines'].update({4:'d', 5:'e'})
+        #new line
+        line['date'] = '2017-02-27'
+        line['doc_type'] = 'MORTGAGE'
+        record['lines'].update(line)
         self.log('Reached this point')
         yield record
 
