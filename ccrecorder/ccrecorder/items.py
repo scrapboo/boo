@@ -7,11 +7,40 @@
 
 import scrapy
 
-class CCrecord_line(scrapy.Item):
+class CCrecordLineName(scrapy.Item):
+    """doc1_table item
+    """
+    name = scrapy.Field()
+    type = scrapy.Field()
+
+
+class CCrecordLineParcel(scrapy.Item):
+    """doc2_table item
+    """
+    pin = scrapy.Field()
+    address = scrapy.Field()
+
+
+class CCrecordLineRelatedDoc(scrapy.Item):
+    """doc3_table item
+    """
+    doc_number = scrapy.Field()
+    url = scrapy.Field()
+
+
+class CCrecordLine(scrapy.Item):
     """
     A single line in a list of documents of a record
     """
-    pass
+    date = scrapy.Field()
+    doc_type = scrapy.Field()
+    doc_num = scrapy.Field()
+    consideration = scrapy.Field()
+    names = scrapy.Field()
+    parcels = scrapy.Field()
+    related_docs = scrapy.Field()
+    show_doc = scrapy.Field()
+
 
 class CCrecord(scrapy.Item):
     """
@@ -19,4 +48,4 @@ class CCrecord(scrapy.Item):
     """
     pin = scrapy.Field()
     record_number = scrapy.Field()
-    pass
+    lines = scrapy.Field()
