@@ -78,7 +78,7 @@ class RecordsSpider(CSVFeedSpider):
         line['doc_type'] = 'MORTGAGE'
         record['lines'] = {}
         record['lines'].update({4:'d', 5:'e'})
-        self.log('Reached this point')
+        # self.log('Reached this point')
         yield record
 
 '''
