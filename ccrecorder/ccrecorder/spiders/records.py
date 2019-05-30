@@ -20,11 +20,11 @@ class RecordsSpider(CSVFeedSpider):
         Reads a row in csv and makes a request to the pin page
         :param response: the downloaded pin page
         :param row: a single PIN read from the pin feed file
-        :return: yiels a scrapy.Item
+        :return: yields a scrapy.Request to pin page
         """
         PIN_REQUEST_URL = 'https://www.ccrecorder.org/parcels/search/parcel/result/?line='
         pin = row['pin']                                                # the name of the column defined in 'headers'
-        return scrapy.Request(url=PIN_REQUEST_URL + pin, callback=self.parse_pin_page, meta={'pin':pin})
+        yield scrapy.Request(url=PIN_REQUEST_URL + pin, callback=self.parse_pin_page, meta={'pin':pin})
 
     def parse_pin_page(self, response):
         """
@@ -49,6 +49,9 @@ class RecordsSpider(CSVFeedSpider):
                 yield None
 
         else:                                                           # there is a PIN like that
+            # let's analyse whether there are multiple 14 digit pins on this parcel
+            # ... here...
+            # extract the number for the record
             record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
             # self.log(response.meta['pin'])
             yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
