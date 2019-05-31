@@ -62,7 +62,7 @@ class RecordsSpider(CSVFeedSpider):
                 city = line.xpath(CITY_XPATH).get()
                 record_number = line.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
                 # self.log(response.meta['pin'])
-                scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
+                yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,
                                  meta={
                                      'pin': pin,
@@ -71,6 +71,7 @@ class RecordsSpider(CSVFeedSpider):
                                      'record_number': record_number
                                     }
                                  )
+                self.log('really?')
 
     def parse_docs_page(self, response):
         """
