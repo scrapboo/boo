@@ -36,7 +36,10 @@ class RecordsSpider(CSVFeedSpider):
         :return: yields a record or a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
-        PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'
+        PIN_LIST_TABLE_XPATH = '//*[@id="objs_body"]'
+        PIN_LIST_LINE_IN_TABLE = '//tr'
+        PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'  #//*[@id="objs_body"]/tr[1]
+        PIN_LIST_LINE_XPATH2 = '//*[@id="objs_body"]/tr[2]'
         PIN14_XPATH = '//td[1]/text()'
         STREET_ADDRESS_XPATH = '//td[2]/text()'
         CITY_XPATH = '//td[3]/text()'
@@ -54,7 +57,9 @@ class RecordsSpider(CSVFeedSpider):
 
         else:                                                           # there is a PIN like that
             # let's analyse whether there are multiple 14 digit pins on this parcel
-            lines = response.xpath(PIN_LIST_LINE_XPATH)
+            table = response.xpath(PIN_LIST_TABLE_XPATH)
+            #table_all = table.getall()
+            lines = table.xpath(PIN_LIST_LINE_IN_TABLE)
             lines_list = lines.getall()
             # self.log(lines_list)
             # extract the number for the record, tol
