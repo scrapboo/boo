@@ -55,8 +55,11 @@ class RecordsSpider(CSVFeedSpider):
         else:                                                           # there is a PIN like that
             # let's analyse whether there are multiple 14 digit pins on this parcel
             lines = response.xpath(PIN_LIST_LINE_XPATH)
-            # extract the number for the record, to to the docs page and come back when done
-            for line in lines:      #cycle through the selectors
+            lines_list = lines.getall()
+            # self.log(lines_list)
+            # extract the number for the record, tol
+            # to the docs page and come back when done
+            for index, line in enumerate(lines):      #cycle through the selectors
                 pin = line.xpath(PIN14_XPATH).get()
                 street_address = line.xpath(STREET_ADDRESS_XPATH).get()
                 city = line.xpath(CITY_XPATH).get()
@@ -71,7 +74,7 @@ class RecordsSpider(CSVFeedSpider):
                                      'record_number': record_number
                                     }
                                  )
-                self.log('really?')
+                self.log(index)
 
 
     def parse_docs_page(self, response):
