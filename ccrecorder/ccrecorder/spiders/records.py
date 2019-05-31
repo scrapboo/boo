@@ -36,7 +36,7 @@ class RecordsSpider(CSVFeedSpider):
         :return: yields a record or a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
-        PIN_LIST_LINE_XPATH = '//*[@id="objs_table"]/*[@id="objs_body"]/tr'  #//*[@id="objs_table"]
+        PIN_LIST_LINE_XPATH = '//*[@id="pins_table"]/*[@id="objs_body"]/tr'  #//*[@id="objs_table"]
         PIN14_XPATH = '/td[1]/text()'
         STREET_ADDRESS_XPATH = '/td[2]/text()'
         CITY_XPATH = '/td[3]/text()'
