@@ -73,6 +73,7 @@ class RecordsSpider(CSVFeedSpider):
                                  )
                 self.log('really?')
 
+
     def parse_docs_page(self, response):
         """
         Parces the docs page of a pin after jumping to it.
