@@ -38,6 +38,8 @@ class RecordsSpider(CSVFeedSpider):
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
         PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'
         PIN14_XPATH = '//td[1]/text()'
+        STREET_ADDRESS_XPATH = '//td[2]/text()'
+        CITY_XPATH = '//td[3]/text()'
         RECORD_NUMBER_XPATH = '//td[4]/a/@href'
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
@@ -56,12 +58,16 @@ class RecordsSpider(CSVFeedSpider):
             # extract the number for the record, to to the docs page and come back when done
             for line in lines:      #cycle through the selectors
                 pin = line.xpath(PIN14_XPATH).get()
+                street_address = line.xpath(STREET_ADDRESS_XPATH).get()
+                city = line.xpath(CITY_XPATH).get()
                 record_number = line.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
-                self.log(response.meta['pin'])
+                # self.log(response.meta['pin'])
                 yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,
                                  meta={
-                                     'pin':response.meta['pin'],
+                                     'pin': pin,
+                                     'street_address': street_address,
+                                     'city': city,
                                      'record_number': record_number
                                     }
                                  )
@@ -74,8 +80,9 @@ class RecordsSpider(CSVFeedSpider):
         """
         record = CCrecord()
         line = CCrecordLine()
-        lns = {1:'a', 2:'b', 3:'c'}
         record['pin'] = response.meta['pin']
+        record['street_address'] = response.meta['street_address']
+        record['city'] = response.meta['city']
         record['record_number'] = response.meta['record_number']
         #new line
         line['date'] = '2017-02-27'
