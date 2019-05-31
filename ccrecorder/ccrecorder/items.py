@@ -32,6 +32,7 @@ class CCrecordLine(scrapy.Item):
     """
     A single line in a list of documents of a record
     """
+    index = scrapy.Field()
     date = scrapy.Field()
     doc_type = scrapy.Field()
     doc_num = scrapy.Field()
@@ -51,5 +52,5 @@ class CCrecord(scrapy.Item):
     street_address = scrapy.Field()
     city = scrapy.Field()
     record_number = scrapy.Field()
-    lines = scrapy.Field()
+    docs = scrapy.Field()
 

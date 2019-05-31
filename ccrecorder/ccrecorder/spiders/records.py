@@ -107,6 +107,7 @@ class RecordsSpider(CSVFeedSpider):
         for index, liness in enumerate(liness_list):  # not to forget that 14 digit PIN gives 2 tables of results.
             linearr = str(index + 1)
             line_xpath = '{}[{}]'.format(DOCS_TABLE_LINE_XPATH, linearr)
+            line['index'] = index
             line['date'] = response.xpath(line_xpath + DOC_DATE_RECORDED_XPATH).get()
             line['doc_type'] = response.xpath(line_xpath + DOC_TYPE_RECORDED_XPATH).get()
             line['doc_num'] = response.xpath(line_xpath + DOC_NUM_RECORDED_XPATH).get()
@@ -118,7 +119,7 @@ class RecordsSpider(CSVFeedSpider):
             for indx, linesss in enumerate(linesss_list):
                 linearrr = str(indx + 1)
 
-        record['lines'].update(line)
+        record['docs'].update(line)
         # self.log('Reached this point')
         yield record
 
