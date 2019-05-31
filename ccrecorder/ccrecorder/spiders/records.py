@@ -33,7 +33,7 @@ class RecordsSpider(CSVFeedSpider):
         jumps to those pages and scrapes their contence into a
         scrapy.item CCrecord
         :param response:
-        :return: yields a record of a bunch of records
+        :return: yields a record or a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
         PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'
