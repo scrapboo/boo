@@ -36,7 +36,9 @@ class RecordsSpider(CSVFeedSpider):
         :return: yields a record of a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
-        RECORD_NUMBER_XPATH = '//*[@id="objs_body"]/tr/td[4]/a/@href'
+        PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'
+        PIN14_XPATH = '//td[1]/text()'
+        RECORD_NUMBER_XPATH = '//td[4]/a/@href'
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
@@ -50,11 +52,13 @@ class RecordsSpider(CSVFeedSpider):
 
         else:                                                           # there is a PIN like that
             # let's analyse whether there are multiple 14 digit pins on this parcel
-            # ... here...
-            # extract the number for the record
-            record_number = response.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
-            # self.log(response.meta['pin'])
-            yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
+            lines = response.xpath(PIN_LIST_LINE_XPATH)
+            # extract the number for the record, to to the docs page and come back when done
+            for line in lines:      #cycle through the selectors
+                pin = line.xpath(PIN14_XPATH).get()
+                record_number = line.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
+                self.log(response.meta['pin'])
+                yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,
                                  meta={
                                      'pin':response.meta['pin'],
