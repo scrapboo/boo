@@ -12,7 +12,7 @@ class RecordsSpider(CSVFeedSpider):
     """
     name = 'records'
     allowed_domains = ['ccrecorder.org']
-    start_urls = ['https://alxfed.github.io/docs/pin_feed.csv']
+    start_urls = ['https://alxfed.github.io/docs/pin_feed2.csv']
     headers = ['pin']
 
     def parse_row(self, response, row):
@@ -36,7 +36,7 @@ class RecordsSpider(CSVFeedSpider):
         :return: yields a record or a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
-        PIN_LIST_LINE_XPATH = '//*[@id="objs_body"]/tr'  #//*[@id="objs_body"]/tr[1]
+        PIN_LIST_LINE_XPATH = '//*[@id="objs_table"]/*[@id="objs_body"]/tr'  #//*[@id="objs_table"]
         PIN14_XPATH = '/td[1]/text()'
         STREET_ADDRESS_XPATH = '/td[2]/text()'
         CITY_XPATH = '/td[3]/text()'
