@@ -84,21 +84,41 @@ class RecordsSpider(CSVFeedSpider):
         :param response - the downloaded record/docs page
         :return: yield a scrapy.item CCrecord for every valid PIN
         """
-
+        DOCS_TABLE_LINE_XPATH = '//*[@id="docs_body"]/tr'
+        DOC_DATE_RECORDED_XPATH = '/td[1]/text()'
+        DOC_TYPE_RECORDED_XPATH = '/td[2]/text()'
+        DOC_NUM_RECORDED_XPATH = '/td[3]/text()'
+        DOC_URL_NUM_XPATH = '/td[3]/a/@href/text()'
+        DOC_CONSIDERATION_XPATH = 'td[4]/text()'
+        DOCS1_TABLE_LINE_XPATH = '//*[@id="docs1_body"]/tr'
 
         record = CCrecord()
-        line = CCrecordLine()
+        record['lines'] = {}
+
         record['pin'] = response.meta['pin']
         record['street_address'] = response.meta['street_address']
         record['city'] = response.meta['city']
         record['record_number'] = response.meta['record_number']
-        #new line
-        line['date'] = '2017-02-27'
-        line['doc_type'] = 'MORTGAGE'
-        record['lines'] = {}
-        record['lines'].update(line)
-        # self.log('Reached this point')
-        yield record
+
+        line = CCrecordLine()
+
+        liness_list = response.xpath(DOCS_TABLE_LINE_XPATH).getall()
+
+        for index, liness in enumerate(liness_list):  # not to forget that 14 digit PIN gives 2 tables of results.
+            linearr = str(index + 1)
+            line_xpath = '{}[{}]'.format(DOCS_TABLE_LINE_XPATH, linearr)
+            line['date'] = response.xpath(line_xpath + DOC_DATE_RECORDED_XPATH).get()
+            line['doc_type'] = response.xpath(line_xpath + DOC_TYPE_RECORDED_XPATH).get()
+            line['doc_num'] = response.xpath(line_xpath + DOC_NUM_RECORDED_XPATH).get()
+            line['doc_url_num'] = response.xpath(line_xpath + DOC_URL_NUM_XPATH).get()   # extract the number
+            line['consideration'] = response.xpath(line_xpath + DOC_CONSIDERATION_XPATH).get()
+            # for #1 name/type
+            for indx, linesss in enumerate(linesss_list):
+                linearrr = str(indx + 1)
+
+            record['lines'].update(line)
+            # self.log('Reached this point')
+            yield record
 
 '''
 .re('[.0-9]+')

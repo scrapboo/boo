@@ -35,6 +35,7 @@ class CCrecordLine(scrapy.Item):
     date = scrapy.Field()
     doc_type = scrapy.Field()
     doc_num = scrapy.Field()
+    doc_url_num = scrapy.Field
     consideration = scrapy.Field()
     names = scrapy.Field()
     parcels = scrapy.Field()
