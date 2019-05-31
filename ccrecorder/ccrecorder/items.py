@@ -50,3 +50,5 @@ class CCrecord(scrapy.Item):
     street_address = scrapy.Field()
     city = scrapy.Field()
     record_number = scrapy.Field()
+    lines = scrapy.Field()
+
