@@ -112,13 +112,15 @@ class RecordsSpider(CSVFeedSpider):
             line['doc_num'] = response.xpath(line_xpath + DOC_NUM_RECORDED_XPATH).get()
             line['doc_url_num'] = response.xpath(line_xpath + DOC_URL_NUM_XPATH).get()   # extract the number
             line['consideration'] = response.xpath(line_xpath + DOC_CONSIDERATION_XPATH).get()
+
+            linesss_list = response.xpath(line_xpath + DOCS1_TABLE_LINE_XPATH).getall()
             # for #1 name/type
             for indx, linesss in enumerate(linesss_list):
                 linearrr = str(indx + 1)
 
-            record['lines'].update(line)
-            # self.log('Reached this point')
-            yield record
+        record['lines'].update(line)
+        # self.log('Reached this point')
+        yield record
 
 '''
 .re('[.0-9]+')
