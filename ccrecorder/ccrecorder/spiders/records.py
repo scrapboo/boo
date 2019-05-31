@@ -56,17 +56,17 @@ class RecordsSpider(CSVFeedSpider):
             # let's analyse whether there are multiple 14 digit pins on this parcel
             #table = response.xpath(PIN_LIST_TABLE_XPATH)
             #table_all = table.getall()
-            lines = response.xpath(PIN_LIST_LINE_XPATH).getall()
+            lines_list = response.xpath(PIN_LIST_LINE_XPATH).getall()
             # self.log(lines_list)
             # extract the number for the record, tol
             # to the docs page and come back when done
-            for index, line in enumerate(lines):      #cycle through the selectors
+            for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
                 linear = str(index+1)
-                pin_path = '{}[{}]{}'.format(PIN_LIST_LINE_XPATH, linear, PIN14_XPATH)
-                pin = response.xpath(pin_path).get()
-                street_address = line.xpath(STREET_ADDRESS_XPATH).get()
-                city = line.xpath(CITY_XPATH).get()
-                record_number = line.xpath(RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
+                line_xpath = '{}[{}]'.format(PIN_LIST_LINE_XPATH, linear)
+                pin = response.xpath(line_xpath + PIN14_XPATH).get()
+                street_address = response.xpath(line_xpath + STREET_ADDRESS_XPATH).get()
+                city = response.xpath(line_xpath + CITY_XPATH).get()
+                record_number = response.xpath(line_xpath + RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
                 # self.log(response.meta['pin'])
                 yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,
