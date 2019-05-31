@@ -42,24 +42,23 @@ class RecordsSpider(CSVFeedSpider):
         CITY_XPATH = '/td[3]/text()'
         RECORD_NUMBER_XPATH = '/td[4]/a/@href'
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
+
+        # And now...
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
             if NOT_FOUND.startswith('No PINs'):                         # No PINs?
-                self.log('Not found PIN '+response.url)                 # Debug notification
+                # self.log('Not found PIN '+response.url)                 # Debug notification
                 yield None                                              # and get out of here.
 
             else:
-                self.log('something is in the place of Not found but it is not it')
+                self.log('something is in the place of No PINs but it is not it')
                 yield None
 
         else:                                                           # there is a PIN like that
-            # let's analyse whether there are multiple 14 digit pins on this parcel
-            #table = response.xpath(PIN_LIST_TABLE_XPATH)
-            #table_all = table.getall()
+            # Tried to iterate over selectors but it didn's work, this is a less elegant way
             lines_list = response.xpath(PIN_LIST_LINE_XPATH).getall()
-            # self.log(lines_list)
-            # extract the number for the record, tol
-            # to the docs page and come back when done
+            # extract the number(s) for the record(s), jump
+            # to the docs page (as many times as necessary, come back every time when done
             for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
                 linear = str(index+1)
                 line_xpath = '{}[{}]'.format(PIN_LIST_LINE_XPATH, linear)
@@ -85,6 +84,8 @@ class RecordsSpider(CSVFeedSpider):
         :param response - the downloaded record/docs page
         :return: yield a scrapy.item CCrecord for every valid PIN
         """
+
+
         record = CCrecord()
         line = CCrecordLine()
         record['pin'] = response.meta['pin']
@@ -100,6 +101,5 @@ class RecordsSpider(CSVFeedSpider):
         yield record
 
 '''
-scrapy shell -s USER_AGENT="Mozilla/5.0" 
 .re('[.0-9]+')
 '''
