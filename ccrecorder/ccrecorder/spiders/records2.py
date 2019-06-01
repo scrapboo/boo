@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.selector import Selector
 from scrapy.spiders import CSVFeedSpider
 from ccrecorder.items import CCrecord, CCrecordLine, CCrecordLineName, CCrecordLineParcel, CCrecordLineRelatedDoc
 import parsel
@@ -37,14 +38,14 @@ class RecordsSpider(CSVFeedSpider):
         :return: yields a record or a bunch of records
         """
         DOCUMENTS_PAGE_URL = 'https://www.ccrecorder.org/parcels/show/parcel/'
-        PIN_LIST_LINE_XPATH = '//*[@id="pins_table"]/*[@id="objs_body"]/tr'  #//*[@id="objs_table"]
+        PIN_LIST_LINE_XPATH = '//*[@id="pins_table"]/tbody//tr'  #//*[@id="objs_table"]
         PIN14_XPATH = '/td[1]/text()'
         STREET_ADDRESS_XPATH = '/td[2]/text()'
         CITY_XPATH = '/td[3]/text()'
         RECORD_NUMBER_XPATH = '/td[4]/a/@href'
         NO_PINS_FOUND_RESPONSE_XPATH = '//html/body/div[4]/div/div/div[2]/div/div/p[2]/text()' # where it can be
 
-        # And now...
+        # And now...//*[@id="pins_table"]
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
             if NOT_FOUND.startswith('No PINs'):                         # No PINs?
@@ -57,16 +58,16 @@ class RecordsSpider(CSVFeedSpider):
 
         else:                                                           # there is a PIN like that
             # Tried to iterate over selectors but it didn's work, this is a less elegant way
-            lines_list = response.xpath(PIN_LIST_LINE_XPATH).getall()
+            lines_list = response.xpath('//*[@id="pins_table"]/tbody//tr').getall()
             # extract the number(s) for the record(s), jump
             # to the docs page (as many times as necessary, come back every time when done
-            for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
-                linear = str(index+1)
-                line_xpath = '{}[{}]'.format(PIN_LIST_LINE_XPATH, linear)
-                pin = response.xpath(line_xpath + PIN14_XPATH).get()
-                street_address = response.xpath(line_xpath + STREET_ADDRESS_XPATH).get()
-                city = response.xpath(line_xpath + CITY_XPATH).get().strip()             # strip removes trailing spaces
-                record_number = response.xpath(line_xpath + RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
+            for line in lines_list:
+                sel = Selector(text=line)
+                self.log(sel)
+                pin = sel.xpath('//td[1]').get()
+                street_address = sel.xpath('/td[2]/text()').get()
+                city = sel.xpath('/td[3]/text()').get().strip()             # strip removes trailing spaces
+                record_number = sel.xpath('td[4]/a/@href').re('[.0-9]+')[0]
                 # self.log(response.meta['pin'])
                 yield scrapy.Request(url=DOCUMENTS_PAGE_URL + record_number + '/',
                                  callback=self.parse_docs_page,

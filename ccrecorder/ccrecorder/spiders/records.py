@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.selector import Selector
 from scrapy.spiders import CSVFeedSpider
 from ccrecorder.items import CCrecord, CCrecordLine, CCrecordLineName, CCrecordLineParcel, CCrecordLineRelatedDoc
 
@@ -61,6 +62,9 @@ class RecordsSpider(CSVFeedSpider):
             # to the docs page (as many times as necessary, come back every time when done
             for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
                 linear = str(index+1)
+                #line = line.replace('\n', '')
+                #sel = Selector(line)
+                #self.log(line)
                 line_xpath = '{}[{}]'.format(PIN_LIST_LINE_XPATH, linear)
                 pin = response.xpath(line_xpath + PIN14_XPATH).get()
                 street_address = response.xpath(line_xpath + STREET_ADDRESS_XPATH).get()
