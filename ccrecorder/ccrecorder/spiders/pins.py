@@ -49,8 +49,13 @@ class RecordsSpider(CSVFeedSpider):
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
             if NOT_FOUND.startswith('No PINs'):                         # No PINs?
+                pin = response.meta['pin']
+                if len(pin) < 14:
+                    pin = pin + '0000'
+                pin14['pin'] = pin
+                pin14['pin_status'] = 'Not'
                 #self.log('Not found PIN '+response.url)                 # Debug notification
-                yield None                                              # and get out of here.
+                yield pin14                                             # and get out of here.
 
             else:
                 self.log('something is in the place of No PINs but it is not it')
