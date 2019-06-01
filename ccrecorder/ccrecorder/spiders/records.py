@@ -58,8 +58,8 @@ class RecordsSpider(CSVFeedSpider):
         else:                                                           # there is a PIN like that
             # Tried to iterate over selectors but it didn's work, this is a less elegant way
             lines_list = response.xpath(PIN_LIST_LINE_XPATH).getall()
-            # extract the number(s) for the record(s), jump
-            # to the docs page (as many times as necessary, come back every time when done
+            # extract the number(s) for the record(s), jump to the docs page
+            # (as many times as necessary, come back every time when done
             for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
                 linear = str(index+1)
                 #line = line.replace('\n', '')
@@ -97,7 +97,7 @@ class RecordsSpider(CSVFeedSpider):
         DOCS1_TABLE_LINE_XPATH = '//*[@id="docs1_body"]/tr'
 
         record = CCrecord()
-        record['lines'] = {}
+        record['docs'] = {}
 
         record['pin'] = response.meta['pin']
         record['street_address'] = response.meta['street_address']
@@ -111,21 +111,20 @@ class RecordsSpider(CSVFeedSpider):
         for index, liness in enumerate(liness_list):  # not to forget that 14 digit PIN gives 2 tables of results.
             linearr = str(index + 1)
             line_xpath = '{}[{}]'.format(DOCS_TABLE_LINE_XPATH, linearr)
-            line['index'] = index
             line['date'] = response.xpath(line_xpath + DOC_DATE_RECORDED_XPATH).get()
             line['doc_type'] = response.xpath(line_xpath + DOC_TYPE_RECORDED_XPATH).get()
             line['doc_num'] = response.xpath(line_xpath + DOC_NUM_RECORDED_XPATH).get()
             line['doc_url_num'] = response.xpath(line_xpath + DOC_URL_NUM_XPATH).get()   # extract the number
             line['consideration'] = response.xpath(line_xpath + DOC_CONSIDERATION_XPATH).get()
-
+            '''
             linesss_list = response.xpath(line_xpath + DOCS1_TABLE_LINE_XPATH).getall()
             # for #1 name/type
             for indx, linesss in enumerate(linesss_list):
                 linearrr = str(indx + 1)
-
-        record['docs'].update(line)
-        # self.log('Reached this point')
-        yield record
+            '''
+            record['docs'].update({linearr:line})
+            # self.log('Reached this point')
+            yield record
 
 '''
 .re('[.0-9]+')
