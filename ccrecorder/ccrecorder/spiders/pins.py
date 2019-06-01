@@ -53,7 +53,7 @@ class RecordsSpider(CSVFeedSpider):
                 if len(pin) < 14:
                     pin = pin + '0000'
                 pin14['pin'] = pin
-                pin14['pin_status'] = 'Not'
+                pin14['pin_status'] = 'not'
                 #self.log('Not found PIN '+response.url)                 # Debug notification
                 yield pin14                                             # and get out of here.
 
