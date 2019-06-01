@@ -74,5 +74,6 @@ class RecordsSpider(CSVFeedSpider):
                 pin14['street_address'] = response.xpath(line_xpath + STREET_ADDRESS_XPATH).get()
                 pin14['city'] = response.xpath(line_xpath + CITY_XPATH).get().strip()             # strip removes trailing spaces
                 pin14['record_number'] = response.xpath(line_xpath + RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
+                pin14['pin_status'] = 'valid'
                 #self.log(response.meta['pin'])
                 yield pin14
