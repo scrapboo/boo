@@ -10,10 +10,10 @@ import scrapy
 class CCpin14(scrapy.Item):
     """pin14 item for pins spider
     """
-    pin = scrapy.Field
-    record_number = scrapy.Field
-    street_address = scrapy.Field
-    city = scrapy.Field
+    pin = scrapy.Field()
+    record_number = scrapy.Field()
+    street_address = scrapy.Field()
+    city = scrapy.Field()
 
 
 class CCrecordLineName(scrapy.Item):

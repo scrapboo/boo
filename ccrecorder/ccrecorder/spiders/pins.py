@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.selector import Selector
 from scrapy.spiders import CSVFeedSpider
-from ccrecorder.items import CCrecord, CCrecordLine, CCrecordLineName, CCrecordLineParcel, CCrecordLineRelatedDoc, CCpin14
+from ccrecorder.items import CCpin14
 
 
 class RecordsSpider(CSVFeedSpider):
@@ -49,7 +49,7 @@ class RecordsSpider(CSVFeedSpider):
         NOT_FOUND = response.xpath(NO_PINS_FOUND_RESPONSE_XPATH).get()  # what is there
         if NOT_FOUND:                                                   # ?  (can't do without this, because of None)
             if NOT_FOUND.startswith('No PINs'):                         # No PINs?
-                # self.log('Not found PIN '+response.url)                 # Debug notification
+                #self.log('Not found PIN '+response.url)                 # Debug notification
                 yield None                                              # and get out of here.
 
             else:
@@ -63,13 +63,11 @@ class RecordsSpider(CSVFeedSpider):
             # (as many times as necessary, come back every time when done
             for index, line in enumerate(lines_list):  # not to forget that 14 digit PIN gives 2 tables of results.
                 linear = str(index+1)
-                #line = line.replace('\n', '')
-                #sel = Selector(line)
                 #self.log(line)
                 line_xpath = '{}[{}]'.format(PIN_LIST_LINE_XPATH, linear)
                 pin14['pin'] = response.xpath(line_xpath + PIN14_XPATH).get()
                 pin14['street_address'] = response.xpath(line_xpath + STREET_ADDRESS_XPATH).get()
                 pin14['city'] = response.xpath(line_xpath + CITY_XPATH).get().strip()             # strip removes trailing spaces
                 pin14['record_number'] = response.xpath(line_xpath + RECORD_NUMBER_XPATH).re('[.0-9]+')[0]
-                # self.log(response.meta['pin'])
+                #self.log(response.meta['pin'])
                 yield pin14
